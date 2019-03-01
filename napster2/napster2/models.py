@@ -15,7 +15,7 @@ from django.db import models
 class Album(models.Model):
     albumid = models.AutoField(db_column='AlbumId', primary_key=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=160)  # Field name made lowercase.
-    artistid = models.ForeignKey('Artist', db_column='ArtistId')  # Field name made lowercase.
+    artistid = models.ForeignKey('Artist', db_column='ArtistId', on_delete=models.DO_NOTHING)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -23,7 +23,7 @@ class Album(models.Model):
 
 
 class Applepay(models.Model):
-    appleinvoiceid = models.OneToOneField('Invoice', db_column='AppleInvoiceID', primary_key=True)  # Field name made lowercase.
+    appleinvoiceid = models.OneToOneField('Invoice', db_column='AppleInvoiceID', primary_key=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
     appleid = models.CharField(db_column='AppleID', max_length=60, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -41,7 +41,7 @@ class Artist(models.Model):
 
 
 class Clips(models.Model):
-    clipstrackid = models.OneToOneField('Track', db_column='ClipsTrackId', primary_key=True)  # Field name made lowercase.
+    clipstrackid = models.OneToOneField('Track', db_column='ClipsTrackId', primary_key=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
     itunesurl = models.CharField(db_column='ItunesURL', max_length=205, blank=True, null=True)  # Field name made lowercase.
     googleurl = models.CharField(db_column='GoogleURL', max_length=205, blank=True, null=True)  # Field name made lowercase.
 
@@ -51,7 +51,7 @@ class Clips(models.Model):
 
 
 class Creditcard(models.Model):
-    ccinvoiceid = models.OneToOneField('Invoice', db_column='CCInvoiceID', primary_key=True)  # Field name made lowercase.
+    ccinvoiceid = models.OneToOneField('Invoice', db_column='CCInvoiceID', primary_key=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
     ccnum = models.CharField(db_column='CCNum', max_length=60, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -61,8 +61,8 @@ class Creditcard(models.Model):
 
 class Customer(models.Model):
     customerid = models.AutoField(db_column='CustomerId', primary_key=True)  # Field name made lowercase.
-    supportrepid = models.ForeignKey('Employee', db_column='SupportRepId', blank=True, null=True)  # Field name made lowercase.
-    custpersonid = models.ForeignKey('Person', db_column='CustPersonID', blank=True, null=True)  # Field name made lowercase.
+    supportrepid = models.ForeignKey('Employee', db_column='SupportRepId', blank=True, null=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
+    custpersonid = models.ForeignKey('Person', db_column='CustPersonID', blank=True, null=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -72,10 +72,10 @@ class Customer(models.Model):
 class Employee(models.Model):
     employeeid = models.AutoField(db_column='EmployeeId', primary_key=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=30, blank=True, null=True)  # Field name made lowercase.
-    reportsto = models.ForeignKey('self', db_column='ReportsTo', blank=True, null=True)  # Field name made lowercase.
+    reportsto = models.ForeignKey('self', db_column='ReportsTo', blank=True, null=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
     birthdate = models.DateTimeField(db_column='BirthDate', blank=True, null=True)  # Field name made lowercase.
     hiredate = models.DateTimeField(db_column='HireDate', blank=True, null=True)  # Field name made lowercase.
-    personid = models.ForeignKey('Person', db_column='PersonID', blank=True, null=True)  # Field name made lowercase.
+    personid = models.ForeignKey('Person', db_column='PersonID', blank=True, null=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -92,7 +92,7 @@ class Genre(models.Model):
 
 
 class Google(models.Model):
-    googleinvoiceid = models.OneToOneField('Invoice', db_column='GoogleInvoiceID', primary_key=True)  # Field name made lowercase.
+    googleinvoiceid = models.OneToOneField('Invoice', db_column='GoogleInvoiceID', primary_key=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
     googleid = models.CharField(db_column='GoogleID', max_length=60, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -102,7 +102,7 @@ class Google(models.Model):
 
 class Invoice(models.Model):
     invoiceid = models.AutoField(db_column='InvoiceId', primary_key=True)  # Field name made lowercase.
-    customerid = models.ForeignKey(Customer, db_column='CustomerId')  # Field name made lowercase.
+    customerid = models.ForeignKey(Customer, db_column='CustomerId', on_delete=models.DO_NOTHING)  # Field name made lowercase.
     invoicedate = models.DateTimeField(db_column='InvoiceDate')  # Field name made lowercase.
     billingaddress = models.CharField(db_column='BillingAddress', max_length=70, blank=True, null=True)  # Field name made lowercase.
     billingcity = models.CharField(db_column='BillingCity', max_length=40, blank=True, null=True)  # Field name made lowercase.
@@ -118,8 +118,8 @@ class Invoice(models.Model):
 
 class Invoiceline(models.Model):
     invoicelineid = models.AutoField(db_column='InvoiceLineId', primary_key=True)  # Field name made lowercase.
-    invoiceid = models.ForeignKey(Invoice, db_column='InvoiceId')  # Field name made lowercase.
-    trackid = models.ForeignKey('Track', db_column='TrackId')  # Field name made lowercase.
+    invoiceid = models.ForeignKey(Invoice, db_column='InvoiceId', on_delete=models.DO_NOTHING)  # Field name made lowercase.
+    trackid = models.ForeignKey('Track', db_column='TrackId', on_delete=models.DO_NOTHING)  # Field name made lowercase.
     unitprice = models.DecimalField(db_column='UnitPrice', max_digits=10, decimal_places=2)  # Field name made lowercase.
     quantity = models.IntegerField(db_column='Quantity')  # Field name made lowercase.
 
@@ -140,7 +140,7 @@ class Mediatype(models.Model):
 class Myplaylist(models.Model):
     myplaylistid = models.AutoField(db_column='MyPlaylistID', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=45)  # Field name made lowercase.
-    customerid = models.ForeignKey(Customer, db_column='CustomerID')  # Field name made lowercase.
+    customerid = models.ForeignKey(Customer, db_column='CustomerID', on_delete=models.DO_NOTHING)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -148,8 +148,8 @@ class Myplaylist(models.Model):
 
 
 class Myplaylisttracks(models.Model):
-    myplaylistid = models.ForeignKey(Myplaylist, db_column='MyPlaylistID')  # Field name made lowercase.
-    trackid = models.ForeignKey('Track', db_column='TrackID')  # Field name made lowercase.
+    myplaylistid = models.ForeignKey(Myplaylist, db_column='MyPlaylistID', on_delete=models.DO_NOTHING)  # Field name made lowercase.
+    trackid = models.ForeignKey('Track', db_column='TrackID', on_delete=models.DO_NOTHING)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -159,7 +159,7 @@ class Myplaylisttracks(models.Model):
 
 class Order(models.Model):
     orderid = models.AutoField(db_column='OrderID', primary_key=True)  # Field name made lowercase.
-    customerid = models.ForeignKey(Customer, db_column='CustomerID')  # Field name made lowercase.
+    customerid = models.ForeignKey(Customer, db_column='CustomerID', on_delete=models.DO_NOTHING)  # Field name made lowercase.
     playlistmadby = models.CharField(db_column='PlaylistMadBy', max_length=45, blank=True, null=True)  # Field name made lowercase.
     price = models.CharField(db_column='Price', max_length=45, blank=True, null=True)  # Field name made lowercase.
     confirmed = models.CharField(db_column='Confirmed', max_length=1)  # Field name made lowercase.
@@ -171,8 +171,8 @@ class Order(models.Model):
 
 
 class Ordercustplaylist(models.Model):
-    ordercustid = models.ForeignKey(Order, db_column='OrderCustID')  # Field name made lowercase.
-    custplaylistid = models.ForeignKey(Myplaylist, db_column='CustPlaylistID')  # Field name made lowercase.
+    ordercustid = models.ForeignKey(Order, db_column='OrderCustID', on_delete=models.DO_NOTHING)  # Field name made lowercase.
+    custplaylistid = models.ForeignKey(Myplaylist, db_column='CustPlaylistID', on_delete=models.DO_NOTHING)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -181,8 +181,8 @@ class Ordercustplaylist(models.Model):
 
 
 class Orderempplaylist(models.Model):
-    orderempid = models.ForeignKey(Order, db_column='OrderEmpID')  # Field name made lowercase.
-    empplaylistid = models.ForeignKey('Playlist', db_column='EmpPlaylistID')  # Field name made lowercase.
+    orderempid = models.ForeignKey(Order, db_column='OrderEmpID', on_delete=models.DO_NOTHING)  # Field name made lowercase.
+    empplaylistid = models.ForeignKey('Playlist', db_column='EmpPlaylistID', on_delete=models.DO_NOTHING)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -191,8 +191,8 @@ class Orderempplaylist(models.Model):
 
 
 class Ordertrack(models.Model):
-    orderid = models.ForeignKey(Order, db_column='OrderId')  # Field name made lowercase.
-    ordertrackid = models.ForeignKey('Track', db_column='OrderTrackId')  # Field name made lowercase.
+    orderid = models.ForeignKey(Order, db_column='OrderId', on_delete=models.DO_NOTHING)  # Field name made lowercase.
+    ordertrackid = models.ForeignKey('Track', db_column='OrderTrackId', on_delete=models.DO_NOTHING)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -210,7 +210,7 @@ class Payment(models.Model):
 
 
 class Paypal(models.Model):
-    paypalinvoiceid = models.OneToOneField(Invoice, db_column='PaypalInvoiceID', primary_key=True)  # Field name made lowercase.
+    paypalinvoiceid = models.OneToOneField(Invoice, db_column='PaypalInvoiceID', primary_key=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=60, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -252,8 +252,8 @@ class Playlist(models.Model):
 
 
 class Playlisttrack(models.Model):
-    playlistid = models.ForeignKey(Playlist, db_column='PlaylistId')  # Field name made lowercase.
-    trackid = models.ForeignKey('Track', db_column='TrackId')  # Field name made lowercase.
+    playlistid = models.ForeignKey(Playlist, db_column='PlaylistId', on_delete=models.DO_NOTHING)  # Field name made lowercase.
+    trackid = models.ForeignKey('Track', db_column='TrackId', on_delete=models.DO_NOTHING)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -264,9 +264,9 @@ class Playlisttrack(models.Model):
 class Track(models.Model):
     trackid = models.AutoField(db_column='TrackId', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=200)  # Field name made lowercase.
-    albumid = models.ForeignKey(Album, db_column='AlbumId', blank=True, null=True)  # Field name made lowercase.
-    mediatypeid = models.ForeignKey(Mediatype, db_column='MediaTypeId')  # Field name made lowercase.
-    genreid = models.ForeignKey(Genre, db_column='GenreId', blank=True, null=True)  # Field name made lowercase.
+    albumid = models.ForeignKey(Album, db_column='AlbumId', blank=True, null=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
+    mediatypeid = models.ForeignKey(Mediatype, db_column='MediaTypeId', on_delete=models.DO_NOTHING)  # Field name made lowercase.
+    genreid = models.ForeignKey(Genre, db_column='GenreId', blank=True, null=True, on_delete=models.DO_NOTHING)  # Field name made lowercase.
     composer = models.CharField(db_column='Composer', max_length=220, blank=True, null=True)  # Field name made lowercase.
     milliseconds = models.IntegerField(db_column='Milliseconds')  # Field name made lowercase.
     bytes = models.IntegerField(db_column='Bytes', blank=True, null=True)  # Field name made lowercase.

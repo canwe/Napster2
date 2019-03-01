@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'Chinook',
         'USER': 'root',
         'PASSWORD': 'password',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
