@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.urls import path
 from django.contrib import admin
-from django.contrib.auth.views import auth_login
+from django.contrib.auth import views as standard_views
 from napster2 import views
 
 urlpatterns = [
@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^register/$', views.register),
     url(r'^register/success/$', views.register_success),
-    url(r'^login/$', auth_login, name='login'),
+    url(r'^login/$', standard_views.LoginView.as_view(), name='login'),
     url(r'^dashboard/$', views.dashboard),
     url(r'^manage/$', views.update_account_info),
     url(r'^update/success/$', views.update_success),
