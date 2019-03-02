@@ -14,15 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
+from django.urls import path
 from django.contrib import admin
+from django.contrib.auth.views import auth_login
 from napster2 import views
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^$', views.index),
     url(r'^register/$', views.register),
     url(r'^register/success/$', views.register_success),
-    url(r'^login/$', 'django.contrib.auth.views.login'),
+    url(r'^login/$', auth_login, name='login'),
     url(r'^dashboard/$', views.dashboard),
     url(r'^manage/$', views.update_account_info),
     url(r'^update/success/$', views.update_success),

@@ -16,7 +16,7 @@ import datetime
 
 def index(request): # request parameter has host params (ip, etc)
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     variables = RequestContext(request, {'person': person})
     return render_to_response('index.html', variables,)
@@ -51,13 +51,13 @@ def register(request):
             return HttpResponseRedirect('/register/success/')
         else:
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             variables = RequestContext(request, {'person': person})
             return render_to_response('registration/failure.html', variables,)
     else:
         person = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             person = Person.objects.get(username=request.user.get_username())
         variables = RequestContext(request, {'person': person})
         form = RegistrationForm()
@@ -67,7 +67,7 @@ def register(request):
 
 def register_success(request):
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     variables = RequestContext(request, {'person': person})
     return render_to_response('registration/success.html',)
@@ -104,7 +104,7 @@ def dashboard(request):
         print("Saved order confirm.")
         return HttpResponseRedirect('/dashboard/')
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     if person.affiliation == "Customer":
         # Customer dashboard.
@@ -129,7 +129,7 @@ def dashboard(request):
 
 def view_order_details(request, order_id):
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     order = Order.objects.get(orderid=order_id)
     if order.playlistmadby is None:
@@ -176,7 +176,7 @@ def view_cart(request):
         upl_cart = request.session.get('upl_cart', None)
         epl_cart = request.session.get('epl_cart', None)
         person = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             person = Person.objects.get(username=request.user.get_username())
         variables = RequestContext(request, {'person': person, 'user': request.user, 'track_cart': track_cart, 'upl_cart': upl_cart, 'epl_cart': epl_cart})
         print("In view_cart, cart is: ")
@@ -200,7 +200,7 @@ def search(request):
             print("Found " + str(len(list(result))) + " results in search!")
 
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             # make a new form for the next search
             form = SearchForm()
@@ -227,7 +227,7 @@ def search(request):
             print("Found " + str(len(list(result))) + " results in search!")
 
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             # make a new form for the next search
             form = SearchForm()
@@ -236,7 +236,7 @@ def search(request):
         else:
             print("Search form fields not valid.")
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             variables = RequestContext(request, {'person': person})
             return render_to_response('/search/failure.html', variables,)
@@ -248,7 +248,7 @@ def search(request):
     else:
         form = SearchForm()
         person = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             person = Person.objects.get(username=request.user.get_username())
         variables = RequestContext(request, {'form': form, 'person': person})
         return render_to_response('search/search.html', variables)
@@ -378,7 +378,7 @@ def search_playlists(request):
 
             result = Playlist.objects.raw(query)
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             # make a new form for the next search
             form = PlaylistSearchForm()
@@ -387,7 +387,7 @@ def search_playlists(request):
         else:
             print("Search form fields not valid.")
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             variables = RequestContext(request, {'person': person})
             return render_to_response('/search/failure.html', variables,)
@@ -402,7 +402,7 @@ def search_playlists(request):
     else:
         form = PlaylistSearchForm()
         person = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             person = Person.objects.get(username=request.user.get_username())
         variables = RequestContext(request, {'form': form, 'person': person})
         return render_to_response('search/search_playlists.html', variables)
@@ -452,7 +452,7 @@ def checkout(request):
     total_price = str(float('%.2f'%total_price))
     print("Total price: " + total_price)
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     show_confirm_button = person.email != None and person.postalcode != None and person.city != None and person.country != None and (person.creditcardnumber != None or person.paypalemail != None or person.googlepayid != None or person.applepayid != None)
     variables = RequestContext(request, {'person': person, 'user': request.user, 'track_cart': track_cart, 'upl_cart': upl_cart, 'epl_cart': epl_cart, 'total_price': str(total_price), 'show_confirm_button': show_confirm_button})
@@ -461,7 +461,7 @@ def checkout(request):
 @login_required
 def checkout_failure(request):
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     variables = RequestContext(request, {'person': person})
     return render_to_response('checkout/failure.html', variables,)
@@ -469,7 +469,7 @@ def checkout_failure(request):
 @login_required
 def checkout_success(request, track_cart, upl_cart, epl_cart):
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     # customer = select * from Customer 
         # where Customer.PersonID = person.PersonID
@@ -597,14 +597,14 @@ def update_account_info(request):
         else:
             print("update was not valid")
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             variables = RequestContext(request, {'person': person})
             return render_to_response('update/failure.html', variables)
     else:
         form = AccountManagementForm()
         person = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             person = Person.objects.get(username=request.user.get_username())
         variables = RequestContext(request, {'form': form, 'person': person})
         # can pull the variable "form" from the view.
@@ -612,7 +612,7 @@ def update_account_info(request):
 
 def update_success(request):
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     variables = RequestContext(request, {'person': person})
     return render_to_response('update/success.html', variables,)
@@ -668,7 +668,7 @@ def sales_reporting(request):
             total_price = float('%.2f'%total_price)
 
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             # make a new form for the next search
             form = SalesReportingForm()
@@ -677,7 +677,7 @@ def sales_reporting(request):
         else:
             print("Search form fields not valid.")
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             variables = RequestContext(request, {'person': person})
             return render_to_response('/search/failure.html', variables,)
@@ -685,7 +685,7 @@ def sales_reporting(request):
         print("did i get here")
         form = SalesReportingForm()
         person = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             person = Person.objects.get(username=request.user.get_username())
         variables = RequestContext(request, {'person': person, 'form':form})
         return render_to_response('reporting/sales.html', variables,)
@@ -718,7 +718,7 @@ def inventory_reporting(request):
             total_price = str(total_price)
 
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             # make a new form for the next search
             form = SearchForm()
@@ -727,14 +727,14 @@ def inventory_reporting(request):
         else:
             print("Search form fields not valid.")
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             variables = RequestContext(request, {'person': person})
             return render_to_response('reporting/inventory-failure.html', variables,)
     else:
         form = InventoryReportingForm()
         person = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             person = Person.objects.get(username=request.user.get_username())
         variables = RequestContext(request, {'form': form, 'person': person})
         return render_to_response('reporting/inventory.html', variables)
@@ -766,7 +766,7 @@ def demographics(request):
             print("Found " + str(len(list(result))) + " results in search!")
 
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             # make a new form for the next search
             form = DemographicsForm()
@@ -775,7 +775,7 @@ def demographics(request):
         else:
             print("Search form fields not valid.")
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             variables = RequestContext(request, {'person': person, 'customer_country_numbers': customer_country_numbers, 'customer_numbers': customer_numbers})
             return render_to_response('/demographics/failure.html', variables,)
@@ -783,7 +783,7 @@ def demographics(request):
         print("GET request on demographics")
         form = DemographicsForm()
         person = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             person = Person.objects.get(username=request.user.get_username())
         variables = RequestContext(request, {'form': form, 'person': person, 'customer_country_numbers': customer_country_numbers, 'customer_numbers': customer_numbers})
         return render_to_response('demographics/demographics.html', variables,)
@@ -879,7 +879,7 @@ def add_tracks(request):
     else:
         form = AddTrack()
         person = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             person = Person.objects.get(username=request.user.get_username())
         variables = RequestContext(request, {'form': form, 'person': person})
         return render_to_response('addtracks/add_tracks.html', variables)
@@ -887,7 +887,7 @@ def add_tracks(request):
 @login_required
 def add_tracks_failure(request):
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     variables = RequestContext(request, {'person': person})
     return render_to_response('addtracks/failure.html', variables,)
@@ -895,7 +895,7 @@ def add_tracks_failure(request):
 @login_required
 def add_tracks_success(request):
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     variables = RequestContext(request, {'person': person})
     return render_to_response('addtracks/success.html', variables,)
@@ -903,7 +903,7 @@ def add_tracks_success(request):
 @login_required
 def add_tracks_exists(request):
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     variables = RequestContext(request, {'person': person})
     return render_to_response('addtracks/track_exists.html', variables,)
@@ -912,7 +912,7 @@ def add_tracks_exists(request):
 def view_MyPlaylist(request):
     person = None
     form = MyPlaylistCreateForm(request.POST)
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     print(person.personid)
     query = "SELECT * from Person, Customer, MyPlaylist where Person.PersonId = Customer.CustPersonID and Customer.CustomerId = MyPlaylist.CustomerID and Person.PersonId = " + str(person.personid)
@@ -964,7 +964,7 @@ def edit_upl(request):
             tracksearchresult = Track.objects.raw(query2)
 
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             # make a new form for the next search
             form = SearchForm()
@@ -973,7 +973,7 @@ def edit_upl(request):
         else:
             print("Search form fields not valid.")
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             variables = RequestContext(request, {'person': person})
             return render_to_response('/search/failure.html', variables,)
@@ -994,7 +994,7 @@ def edit_upl(request):
     print("i guess this happens")
     form = SearchForm()
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     variables = RequestContext(request, {'form': form, 'person': person, 'trackresult':trackresult})
     return render_to_response('MyPlaylist/edit_MyPlaylist.html', variables)
@@ -1040,7 +1040,7 @@ def edit_epl(request):
             tracksearchresult = Track.objects.raw(query2)
 
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             # make a new form for the next search
             form = SearchForm()
@@ -1049,7 +1049,7 @@ def edit_epl(request):
         else:
             print("Search form fields not valid.")
             person = None
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 person = Person.objects.get(username=request.user.get_username())
             variables = RequestContext(request, {'person': person})
             return render_to_response('/search/failure.html', variables,)
@@ -1068,7 +1068,7 @@ def edit_epl(request):
     print("i guess this happens")
     form = SearchForm()
     person = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         person = Person.objects.get(username=request.user.get_username())
     variables = RequestContext(request, {'form': form, 'person': person, 'trackresult':trackresult})
     return render_to_response('search/playlist_details.html', variables)
